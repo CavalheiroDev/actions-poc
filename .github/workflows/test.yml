@@ -19,10 +19,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
         run: |
-          docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
-          docker build . -t ghcr.io/cavalheirodev/actions-poc-base:test
-          docker push ghcr.io/cavalheirodev/actions-poc-base:test
-
+          FILE=$(git diff --name-only origin/develop -- poetry.lock Dockerfile HEAD -- poetry.lock Dockerfile )
+          echo $FILE
+          if [ "$FILE" == "" ]; then
+            echo "Imagem Atualizada!"
+          else
+            docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
+            docker build . -t ghcr.io/cavalheirodev/actions-poc-base:test
+            docker push ghcr.io/cavalheirodev/actions-poc-base:test
+          fi;
   test:
     defaults:
       run:
