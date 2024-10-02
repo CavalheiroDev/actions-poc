@@ -3,7 +3,7 @@ import sys
 
 import pkg_resources
 
-my_libs = ["pandas", "pydantic", "SQLAlchemy", "watchtower"]
+my_libs = ["pandas", "pydantic", "sqlalchemy", "watchtower"]
 
 
 installed_packages = pkg_resources.working_set
