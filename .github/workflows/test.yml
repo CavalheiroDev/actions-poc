@@ -26,13 +26,14 @@ jobs:
           FILE=$(git diff --name-only origin/develop -- poetry.lock Dockerfile HEAD -- poetry.lock Dockerfile )
           echo $FILE
           if [ "$FILE" == "" ]; then
-            echo "Imagem Atualizada!"
             TEST_IMAGE="ghcr.io/cavalheirodev/actions-poc-base:test"
+            echo "Imagem Atualizada! Usando imagem padrão: $TEST_IMAGE"
           else
             docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
             docker build . -t ghcr.io/cavalheirodev/actions-poc-base:test-temp
             docker push ghcr.io/cavalheirodev/actions-poc-base:test-temp
             TEST_IMAGE="ghcr.io/cavalheirodev/actions-poc-base:test-temp"
+            echo "Imagem Atualizada! Nova imagem criada: $TEST_IMAGE"
           fi;
           echo "::set-output name=test_image::${TEST_IMAGE}"
   test:
