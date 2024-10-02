@@ -37,7 +37,6 @@ jobs:
             echo "Imagem Atualizada! Nova imagem criada: $TEST_IMAGE"
           fi;
           echo "test_image=${TEST_IMAGE}" >> $GITHUB_OUTPUT
-          echo "test_image=${TEST_IMAGE}" >> $GITHUB_ENV
 
   test:
     defaults:
