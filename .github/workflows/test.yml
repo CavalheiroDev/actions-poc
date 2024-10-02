@@ -5,6 +5,25 @@ on:
     types: ["opened", "edited", "reopened", "synchronize", "ready_for_review"]
 
 jobs:
+  build:
+    name: Build base image
+    runs-on: ubuntu-latest
+    needs: verify
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout to Tag
+        uses: actions/checkout@v4
+
+      - name: Build image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
+          docker build . -t ghcr.io/cavalheirodev/actions-poc-base:test
+          docker push ghcr.io/cavalheirodev/actions-poc-base:test
+
   test:
     defaults:
       run:
@@ -12,7 +31,10 @@ jobs:
     name: Testando Aplicação
     runs-on: ubuntu-latest
     container:
-      image: python:3.9-slim-buster
+      image: ghcr.io/cavalheirodev/actions-poc-base:test
+      credentials:
+        username: ${{ secrets.GHCR_USER }}
+        password: ${{ secrets.GHCR_TOKEN }}
 
     steps:
       - name: Checkout
