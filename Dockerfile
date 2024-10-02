@@ -8,7 +8,7 @@ COPY pyproject.toml poetry.lock ./
 
 RUN pip install poetry && \
     poetry export -f requirements.txt -o requirements.txt --without-hashes && \
-    pip uninstall poetry
+    pip uninstall poetry -y
 
 FROM dependencies
 
