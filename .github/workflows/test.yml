@@ -27,8 +27,8 @@ jobs:
             echo "Imagem Atualizada!"
           else
             docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
-            docker build . -t ghcr.io/cavalheirodev/actions-poc-base:test
-            docker push ghcr.io/cavalheirodev/actions-poc-base:test
+            docker build . -t ghcr.io/cavalheirodev/actions-poc-base:test-temp
+            docker push ghcr.io/cavalheirodev/actions-poc-base:test-temp
           fi;
   test:
     defaults:
