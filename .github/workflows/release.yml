@@ -1,4 +1,4 @@
-name: Tag new production release
+name: 2 - Tag new production release
 
 on:
   pull_request:
