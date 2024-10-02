@@ -9,6 +9,9 @@ RUN pip install poetry
 FROM dependencies
 
 WORKDIR /usr/src/app
-RUN poetry config virtualenvs.create false
+
 COPY pyproject.toml poetry.lock ./
-RUN poetry install
+
+RUN poetry config virtualenvs.create false && \
+    poetry export -f requirements.txt -o requirements.txt --without-hashes && \
+    pip install -r requirements.txt
