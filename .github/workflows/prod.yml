@@ -24,19 +24,19 @@ jobs:
         run: |
           echo "Tag selecionada com sucesso! Iniciando processo de deploy."
 
-build:
-  name: Buildando imagem
-  runs-on: self-hosted
+# build:
+#   name: Buildando imagem
+#   runs-on: self-hosted
 
-  steps:
-    - name: Checkout for Tag
-      uses: actions/checkout@v3
+#   steps:
+#     - name: Checkout for Tag
+#       uses: actions/checkout@v3
 
-    - name: Get the release version
-      # i.e.: v1.0.0 -> 1.0.0
-      id: strip-branch-name
-      run: |
-        release_version=$(echo "${{ github.ref }}")
-        echo "Building release version $release_version"
-        echo "RELEASE_VERSION=$release_version" >> $GITHUB_ENV
-        shell: bash
+#     - name: Get the release version
+#       # i.e.: v1.0.0 -> 1.0.0
+#       id: strip-branch-name
+#       run: |
+#         release_version=$(echo "${{ github.ref }}")
+#         echo "Building release version $release_version"
+#         echo "RELEASE_VERSION=$release_version" >> $GITHUB_ENV
+#         shell: bash
