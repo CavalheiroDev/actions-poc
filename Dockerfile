@@ -6,5 +6,5 @@ WORKDIR /usr/src/app
 
 ENV PYTHONUNBUFFERED=1
 
-RUN pip install pandas SQLAlchemy
+RUN pip install pandas SQLAlchemy pydantic
 
