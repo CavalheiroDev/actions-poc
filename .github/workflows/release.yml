@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: Create New Release
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     defaults:
       run:
