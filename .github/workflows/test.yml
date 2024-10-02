@@ -3,6 +3,10 @@ name: 1 - Tests
 on:
   pull_request:
     types: ["opened", "edited", "reopened", "synchronize", "ready_for_review"]
+    outputs:
+        firstword:
+          description: "The first output string"
+          value: ${{ jobs.example_job.outputs.output1 }}
 
 jobs:
   build:
@@ -36,8 +40,8 @@ jobs:
             TEST_IMAGE="ghcr.io/cavalheirodev/actions-poc-base:test-temp"
             echo "Imagem Atualizada! Nova imagem criada: $TEST_IMAGE"
           fi;
-          echo "TEST_IMAGE=${TEST_IMAGE}" >> $GITHUB_ENV
-          echo "::set-output name=test_image::${TEST_IMAGE}"
+          echo "test_image=${TEST_IMAGE}" >> $GITHUB_OUTPUT
+          echo "test_image=${TEST_IMAGE}" >> $GITHUB_ENV
 
   test:
     defaults:
