@@ -35,7 +35,8 @@ jobs:
             TEST_IMAGE="ghcr.io/cavalheirodev/actions-poc-base:test-temp"
             echo "Imagem Atualizada! Nova imagem criada: $TEST_IMAGE"
           fi;
-          echo "::set-output name=test_image::${TEST_IMAGE}"
+          echo "TEST_IMAGE=${TEST_IMAGE}" >> $GITHUB_ENV
+          echo "DEBUG: TEST_IMAGE antes de exportar: $TEST_IMAGE"
   test:
     defaults:
       run:
