@@ -12,7 +12,7 @@ jobs:
       run:
         shell: bash
     outputs:
-      test_image: ${{ steps.set_output.outputs.test_image }}  # Define o output aqui
+      test_image: ${{ steps.set_output.outputs.test_image }}
     steps:
       - name: Checkout to Tag
         uses: actions/checkout@v4
