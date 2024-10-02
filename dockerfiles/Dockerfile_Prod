@@ -1,0 +1,5 @@
+FROM ghcr.io/cavalheirodev/actions-poc:main
+
+COPY main.py .
+
+CMD ["python", "main.py"]

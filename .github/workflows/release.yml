@@ -5,18 +5,15 @@ on:
     branches: [main]
     types: [closed]
 
-env:
-  MASTER_DEPLOY_KEY: ${{ secrets.MASTER_DEPLOY_KEY }}
-
 jobs:
   release:
+    name: Create New Release
+    runs-on: self-hosted
     if: github.event.pull_request.merged == true
     defaults:
       run:
         shell: bash
 
-    name: Create New Release
-    runs-on: self-hosted
     steps:
       - name: Checkout to Main
         uses: actions/checkout@v4
@@ -32,3 +29,21 @@ jobs:
           body_path: ./CHANGELOG.md
           draft: false
           prerelease: false
+    
+  build:
+    name: Build base image
+    runs-on: self-hosted
+    if: github.event.pull_request.merged == true
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout to Main
+        uses: actions/checkout@v4
+
+      - name: Build image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          docker build . --file dockerfiles/Dockerfile_Base --tag ghcr.io/cavalheirodev/actions-poc-base:main
+          docker push ghcr.io/cavalheirodev/actions-poc-base:main
