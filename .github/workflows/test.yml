@@ -26,6 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry export -f requirements.txt -o requirements.txt --without-hashes
+          pip uninstall poetry
           pip install -r requirements.txt
 
       - name: Running Test
