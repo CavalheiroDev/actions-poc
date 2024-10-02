@@ -3,10 +3,6 @@ name: 1 - Tests
 on:
   pull_request:
     types: ["opened", "edited", "reopened", "synchronize", "ready_for_review"]
-    outputs:
-        firstword:
-          description: "The first output string"
-          value: ${{ jobs.example_job.outputs.output1 }}
 
 jobs:
   build:
