@@ -1,25 +1,32 @@
-name: Release to production (Manual)
+name: New Release
 
 on:
-  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    types: [closed]
 
+env:
+  MASTER_DEPLOY_KEY: ${{ secrets.MASTER_DEPLOY_KEY }}
 
 jobs:
-  verify:
+  release:
+    if: github.event.pull_request.merged == true
     defaults:
       run:
         shell: bash
 
-    name: Checando tags...
-    runs-on: ubuntu-latest
+    name: Create New Release
+    runs-on: self-hosted
     steps:
-      - name: Erro - Tag invalida
-        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          echo "Por favor selecione uma tag para fazer o deploy!"
-          exit 1
-      
-      - name: Verificação concluida com sucesso!
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          echo "Tag selecionada com sucesso! Iniciando processo de deploy."
+      - name: Checkout to Main
+        uses: actions/checkout@v4
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.event.pull_request.title }}
+          release_name: ${{ github.event.pull_request.title }}
+          body_path: ./CHANGELOG.md
+          draft: false
+          prerelease: false
