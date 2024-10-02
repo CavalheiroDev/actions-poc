@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 COPY pyproject.toml poetry.lock ./
 
 RUN pip install poetry && \
-    poetry export -f requirements.txt -o requirements.txt --without-hashes && \
+    poetry export -f requirements.txt -o /usr/src/app/requirements.txt --without-hashes && \
     pip uninstall poetry -y
 
 FROM dependencies
