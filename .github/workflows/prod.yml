@@ -3,6 +3,9 @@ name: Release to production (Manual)
 on:
   workflow_dispatch:
 
+env:
+  CURRENT_VERSION: ${{ github.ref }}
+
 
 jobs:
   verify:
@@ -24,19 +27,36 @@ jobs:
         run: |
           echo "Tag selecionada com sucesso! Iniciando processo de deploy."
 
-# build:
-#   name: Buildando imagem
-#   runs-on: self-hosted
+  build:
+    name: Build base image
+    runs-on: self-hosted
+    needs: verify
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout to Main
+        uses: actions/checkout@v4
 
-#   steps:
-#     - name: Checkout for Tag
-#       uses: actions/checkout@v3
+      - name: Build image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          docker build . --file dockerfiles/Dockerfile_Base -t ghcr.io/cavalheirodev/actions-poc-base:main
+          docker push ghcr.io/cavalheirodev/actions-poc-base:main
 
-#     - name: Get the release version
-#       # i.e.: v1.0.0 -> 1.0.0
-#       id: strip-branch-name
-#       run: |
-#         release_version=$(echo "${{ github.ref }}")
-#         echo "Building release version $release_version"
-#         echo "RELEASE_VERSION=$release_version" >> $GITHUB_ENV
-#         shell: bash
+  deploy:
+    name: Deploy to Production
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: ghcr.io/cavalheirodev/actions-poc-base:main
+      credentials:
+        username: ${{ secrets.GHCR_USER }}
+        password: ${{ secrets.GHCR_TOKEN }}
+    steps:
+      - name: Checkout for Tag
+        uses: actions/checkout@v4
+
+      - name: Deploy app
+        run: python main.py
