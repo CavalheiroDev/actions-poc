@@ -1,4 +1,4 @@
-name: 3 - Release to production (Manual)
+name: 4 - Production Rollback (Manual)
 
 on:
   workflow_dispatch:
@@ -19,13 +19,13 @@ jobs:
       - name: Erro - Tag invalida
         if: ${{ github.ref_type != 'tag' }}
         run: |
-          echo "Por favor selecione uma tag para fazer o deploy!"
+          echo "Por favor selecione uma tag para fazer o rollback!"
           exit 1
       
       - name: Verificação concluida com sucesso!
         if: ${{ github.ref_type == 'tag' }}
         run: |
-          echo "Tag selecionada com sucesso! Iniciando processo de deploy."
+          echo "Tag selecionada com sucesso! Iniciando processo de rollback."
 
   build:
     name: Build base image
@@ -42,15 +42,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
         run: |
-          docker build . -t ghcr.io/cavalheirodev/actions-poc-base:production
-          docker push ghcr.io/cavalheirodev/actions-poc-base:production
+          docker build . -t ghcr.io/cavalheirodev/actions-poc-base:backup-production
+          docker push ghcr.io/cavalheirodev/actions-poc-base:backup-production
 
   deploy:
     name: Deploy to Production
     runs-on: self-hosted
     needs: build
     container:
-      image: ghcr.io/cavalheirodev/actions-poc-base:production
+      image: ghcr.io/cavalheirodev/actions-poc-base:backup-production
       credentials:
         username: ${{ secrets.GHCR_USER }}
         password: ${{ secrets.GHCR_TOKEN }}

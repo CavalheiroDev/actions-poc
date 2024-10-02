@@ -23,15 +23,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
         run: |
-          docker build . -t ghcr.io/cavalheirodev/actions-poc-base:develop
-          docker push ghcr.io/cavalheirodev/actions-poc-base:develop
+          docker build . -t ghcr.io/cavalheirodev/actions-poc-base:homolog
+          docker push ghcr.io/cavalheirodev/actions-poc-base:homolog
 
   deploy:
     name: Deploy to Homolog
     runs-on: self-hosted
     needs: build
     container:
-      image: ghcr.io/cavalheirodev/actions-poc-base:develop
+      image: ghcr.io/cavalheirodev/actions-poc-base:homolog
       credentials:
         username: ${{ secrets.GHCR_USER }}
         password: ${{ secrets.GHCR_TOKEN }}
