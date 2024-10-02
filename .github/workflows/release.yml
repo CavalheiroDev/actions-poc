@@ -1,4 +1,4 @@
-name: Build new Release to Production
+name: Tag new production release
 
 on:
   pull_request:

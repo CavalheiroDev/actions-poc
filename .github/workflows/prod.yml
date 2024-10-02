@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  CURRENT_VERSION: ${{ github.ref }}
+  CURRENT_VERSION: echo "${{ github.ref }}" | sed 's/refs\/heads\/.*\///'
 
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Checkout to Main
+      - name: Checkout to Tag
         uses: actions/checkout@v4
 
       - name: Build image
@@ -55,7 +55,7 @@ jobs:
         username: ${{ secrets.GHCR_USER }}
         password: ${{ secrets.GHCR_TOKEN }}
     steps:
-      - name: Checkout for Tag
+      - name: Checkout to Tag
         uses: actions/checkout@v4
 
       - name: Deploy app
