@@ -1,4 +1,4 @@
-name: Release to homolog
+name: 1 - Release to homolog
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
         run: |
-          docker build . --file dockerfiles/Dockerfile_Base -t ghcr.io/cavalheirodev/actions-poc-base:develop
+          docker build . -t ghcr.io/cavalheirodev/actions-poc-base:develop
           docker push ghcr.io/cavalheirodev/actions-poc-base:develop
 
   deploy:
