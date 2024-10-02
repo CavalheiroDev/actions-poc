@@ -66,5 +66,6 @@ jobs:
 
       - name: Running Test
         run: |
-          echo "Rodando testes..."
+          IMAGE_NAME="${{ needs.build.outputs.test_image }}"
+          echo "Rodando testes na imagem: $IMAGE_NAME"
           python main.py
