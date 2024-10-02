@@ -15,3 +15,7 @@ FROM dependencies
 WORKDIR /usr/src/app
 
 RUN pip install -r requirements.txt
+
+RUN poetry config virtualenvs.create false && \
+    poetry export -f requirements.txt -o requirements.txt --without-hashes && \
+    pip install -r requirements.txt
