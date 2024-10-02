@@ -1,0 +1,34 @@
+name: 1 - Tests
+
+on:
+  pull_request:
+    types: ["opened", "edited", "reopened", "synchronize", "ready_for_review"]
+
+jobs:
+  test:
+    defaults:
+      run:
+        shell: bash
+    name: Testando Aplicação
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.9-slim-buster
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+
+      - name: Install dependencies
+        run: |
+          poetry shell
+          poetry install
+
+      - name: Running Test
+        run: |
+          echo "Rodando testes..."
+          python main.py
