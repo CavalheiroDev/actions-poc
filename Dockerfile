@@ -4,14 +4,14 @@ RUN apt-get update
 
 ENV PYTHONUNBUFFERED=1
 
-COPY pyproject.toml poetry.lock ./
-
-RUN pip install poetry && \
-    poetry export -f requirements.txt -o /usr/src/app --without-hashes && \
-    pip uninstall poetry -y
+RUN pip install poetry
 
 FROM dependencies
 
 WORKDIR /usr/src/app
 
-RUN pip install -r requirements.txt
+COPY pyproject.toml poetry.lock ./
+
+
+RUN poetry config virtualenvs.create false && \
+    poetry install
