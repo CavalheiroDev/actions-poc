@@ -1,4 +1,4 @@
-name: 3 - Release to production (Manual)
+name: 4 - Release to production (Manual)
 
 on:
   workflow_dispatch:

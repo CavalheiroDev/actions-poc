@@ -1,4 +1,4 @@
-name: 1 - Release to homolog
+name: 2 - Release to homolog
 
 on:
   push:
