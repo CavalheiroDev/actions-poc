@@ -1,0 +1,43 @@
+name: Release to homolog
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  CURRENT_VERSION: ${{ github.ref_name }}
+
+jobs:
+  build:
+    name: Build Homolog base image
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout to develop
+        uses: actions/checkout@v4
+
+      - name: Build image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          docker build . --file dockerfiles/Dockerfile_Base -t ghcr.io/cavalheirodev/actions-poc-base:develop
+          docker push ghcr.io/cavalheirodev/actions-poc-base:develop
+
+  deploy:
+    name: Deploy to Homolog
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: ghcr.io/cavalheirodev/actions-poc-base:develop
+      credentials:
+        username: ${{ secrets.GHCR_USER }}
+        password: ${{ secrets.GHCR_TOKEN }}
+    steps:
+      - name: Checkout to develop
+        uses: actions/checkout@v4
+
+      - name: Deploy app
+        run: python main.py
